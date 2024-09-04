@@ -20,7 +20,7 @@ for ii = 1:numel(imageFiles)
     %Find the threshold by calculating the image intensity histogram
 
     %Calculate the image intensity histogram
-    [counts, x] = imhist(I, 256);
+    [counts, x] = imhist(I, 512);
 
     %Find the background peak
     [peakVal, peaks] = findpeaks(counts, 'MinPeakProminence', 1e4, 'MinPeakDistance', 10, ...
