@@ -23,7 +23,7 @@ for ii = 1:numel(imageFiles)
     [counts, x] = imhist(I, 512);
 
     %Find the background peak
-    [peakVal, peaks] = findpeaks(counts, 'MinPeakProminence', 1e4, 'MinPeakDistance', 10, ...
+    [peakVal, peaks] = findpeaks(counts, 'MinPeakProminence', 1e3, 'MinPeakDistance', 10, ...
         'SortStr', 'none');
 
     %Find a threshold value that is 50% of the background peak
