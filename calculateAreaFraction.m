@@ -21,15 +21,32 @@ for ii = 1:numel(imageFiles)
 
     %Calculate the image intensity histogram
     [counts, x] = imhist(I, 512);
+    counts = [0; counts];
 
     %Find the background peak
     [peakVal, peaks] = findpeaks(counts, 'MinPeakProminence', 1e3, 'MinPeakDistance', 10, ...
         'SortStr', 'none');
+    peaks = peaks - 1;
 
-    %Find a threshold value that is 50% of the background peak
-    thresholdInd = find(counts(peaks(1):end) <= 0.5 * peakVal(1), 1, 'first');
+    %plot(x, counts(2:end), x(peaks), peakVal, 'o')
+
+    %Find a threshold value that is 50% of the background peak. If there is
+    %more than one peak, limit the search to the region between the two
+    %peaks.
+    if numel(peaks) == 1
+        thresholdInd = find(counts(peaks(1):end) <= 0.5 * peakVal(1), 1, 'first');
+    elseif numel(peaks) > 1
+        thresholdInd = find(counts(peaks(1):peaks(2)) <= 0.5 * peakVal(1), 1, 'first');
+    end
+
+    if isempty(thresholdInd)
+        [~, thresholdInd] = min(counts(peaks(1):peaks(2)));
+    end
+
     thresholdInd = thresholdInd + peaks(1) - 1;
     T = x(thresholdInd);
+
+    %plot(binCenters(1:end - 1), counts, binCenters(peaks), peakVal, 'o', T, counts(thresholdInd), 'x')
 
     %Make a mask of the region
     mask = I > T;
