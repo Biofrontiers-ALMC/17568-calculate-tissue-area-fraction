@@ -34,9 +34,9 @@ for ii = 1:numel(imageFiles)
     %more than one peak, limit the search to the region between the two
     %peaks.
     if numel(peaks) == 1
-        thresholdInd = find(counts(peaks(1):end) <= 0.5 * peakVal(1), 1, 'first');
+        thresholdInd = find(counts(peaks(1):end) <= 0.9 * peakVal(1), 1, 'first');
     elseif numel(peaks) > 1
-        thresholdInd = find(counts(peaks(1):peaks(2)) <= 0.5 * peakVal(1), 1, 'first');
+        thresholdInd = find(counts(peaks(1):peaks(2)) <= 0.75 * peakVal(1), 1, 'first');
     end
 
     if isempty(thresholdInd)
